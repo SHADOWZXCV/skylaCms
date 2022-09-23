@@ -1,5 +1,4 @@
 <?php
-    session_start();
     function is_from_successful_signup(){
         if(isset($_SESSION['signup-successful'])) {
             unset($_SESSION['signup-successful']);
@@ -40,6 +39,6 @@
         <input type="submit" value="login"/>
     </form>
 
-    <a href="/adminsignup">Signup!</a>
+    <a href="/admin/signup">Signup!</a>
 </body>
 </html>

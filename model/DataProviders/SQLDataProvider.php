@@ -5,7 +5,7 @@ use Cms\Model\Interfaces\DataProvider;
 use \PDO;
 
 define("__MODELS_PATH__", "Cms\\Model\\");
-require"model/interfaces/DataProviderInterface.php";
+require "model/interfaces/DataProviderInterface.php";
 
 class SQLDataProvider implements DataProvider {
 
@@ -35,7 +35,19 @@ class SQLDataProvider implements DataProvider {
         $ps = $this->conn->prepare($sql);
 
         return ['status' => $ps->execute($args),
-        'errors' => $ps->errorinfo()];
+        'errors' => $ps->errorinfo(),
+        'rowsAffected' => $ps->rowCount(),
+        ];
+    }
+
+    public function executeAdd(string $sql, $args = null){
+        $ps = $this->conn->prepare($sql);
+
+        return ['status' => $ps->execute($args),
+        'errors' => $ps->errorinfo(),
+        'rowsAffected' => $ps->rowCount(),
+        'id' => $this->conn->lastInsertId(),
+        ];
     }
 
     public function query(string $sql, $args = null, string $model = null){
@@ -53,6 +65,14 @@ class SQLDataProvider implements DataProvider {
         return ['status' => $res,
         'data' =>  $data,
         'errors' => $ps->errorinfo()];
+    }
+
+    // TODO: Fix this, doesn't work!
+    public function resetIds($tableName){
+        $st = 'ALTER TABLE :tablename AUTO_INCREMENT = 1';
+        $this->execute($st, [
+            ':tablename' => $tableName,
+        ]);
     }
 
     // public static function getDataById($id){

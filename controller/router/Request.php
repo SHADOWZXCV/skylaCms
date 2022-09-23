@@ -1,11 +1,11 @@
 <?php
 
-namespace Cms\Routes;
+namespace Cms\Router;
 
 class Request {
-    private $url;
-    private $params;
+    public $url;
     public $controller;
+    private $params;
     private $body;
     private $method;
     

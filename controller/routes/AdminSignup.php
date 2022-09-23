@@ -1,14 +1,14 @@
 <?php
 namespace Cms\Controller\Routes;
-use Cms\Controller\Routes\routeController;
+use Cms\Controller\Routes\Wrappers\RouteController;
 use Cms\Routes\Request;
 use Cms\Model\DataProviders\SQLDataProvider;
 
 require_once "config.php";
-require_once "routeController.php";
+require_once "wrappers/RouteController.php";
 require_once "model/DataProviders/SQLDataProvider.php";
 
-class AdminSignup extends routeController {
+class AdminSignup extends RouteController {
     
     protected function get(){
         view("admin-signup");

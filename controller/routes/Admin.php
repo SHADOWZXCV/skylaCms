@@ -1,11 +1,12 @@
 <?php
 namespace Cms\Controller\Routes;
-use Cms\Controller\Routes\RouteController;
+use Cms\Controller\Routes\Wrappers\RouteController;
 use Cms\Routes\Request;
 use Cms\Model\DataProviders\SQLDataProvider;
 
+session_start();
 require_once "config.php";
-require_once "routeController.php";
+require_once "wrappers/RouteController.php";
 require_once "model/DataProviders/SQLDataProvider.php";
 
 class Admin extends RouteController {
@@ -51,7 +52,9 @@ class Admin extends RouteController {
             die();
         }
 
-        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/admin/articles');
+        $_SESSION['userId'] = $res['data'][0]->id;
+        $_SESSION['signin-successful'] = 1;
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/admin/manage');
         die();
     }
 }

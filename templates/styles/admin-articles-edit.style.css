@@ -1,0 +1,30 @@
+#Edit-Container {
+    width: 50%;
+}
+
+/* #Edit-Container form {
+    width: 100%;
+} */
+
+#Edit-Container form .text {
+    /* width: 50%; */
+    padding: 1em;
+}
+
+#Edit-Container form .Input-Container {
+    display: block;
+    margin: 1em 0;
+    display: grid;
+    grid-template-columns: 15% 85%;
+    align-items: center;
+}
+
+#Edit-Container form .Input-Container * {
+    margin: 0 1em;
+}
+
+#Edit-Container form input[type=submit] {
+    display: block;
+    margin-top: 2em;
+    padding: 1em 2em;
+}
