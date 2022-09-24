@@ -35,7 +35,8 @@ class AdminArticles extends ProtectedRouteController {
             }
 
             $this->checkIfEmpty($_POST['id'], "admin-articles", ['no-data' => 1]);
-            Article::deleteArticle($_POST['id']);
+            $article = new Article(["id" => $_POST['id']]);
+            $article->delete();
         }
 
         if(isset($_POST['op'])){

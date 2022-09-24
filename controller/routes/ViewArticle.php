@@ -13,9 +13,12 @@ class ViewArticle extends RouteController {
         $params = $this->request->params();
         if(isset($params)){
             $id = $params['id'];
-            $data = Article::getArticleById($id);
+            $data = Article::getById($id);
 
             if(!$data){
+                view("404");
+                die();
+            } else if(empty($data[0]->content)){
                 view("404");
                 die();
             }

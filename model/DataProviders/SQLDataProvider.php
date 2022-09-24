@@ -7,16 +7,10 @@ use \PDO;
 define("__MODELS_PATH__", "Cms\\Model\\");
 require "model/interfaces/DataProviderInterface.php";
 
-class SQLDataProvider implements DataProvider {
-
+class SQLDataProvider extends DataProvider {
     private PDO $conn;
-    private static SQLDataProvider $instance;
 
-    private function __construct(){
-        $this->__connect();
-    }
-
-    private function __connect(){
+    protected function init(){
         try {
             $this->conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
         } catch (PDOException $e) {
@@ -31,10 +25,11 @@ class SQLDataProvider implements DataProvider {
         return self::$instance;
     }
 
-    public function execute(string $sql, $args = null){
+    public function execute(string $sql, $args = null) {
         $ps = $this->conn->prepare($sql);
+        $res = $ps->execute($args);
 
-        return ['status' => $ps->execute($args),
+        return ['status' => $res,
         'errors' => $ps->errorinfo(),
         'rowsAffected' => $ps->rowCount(),
         ];
@@ -42,8 +37,10 @@ class SQLDataProvider implements DataProvider {
 
     public function executeAdd(string $sql, $args = null){
         $ps = $this->conn->prepare($sql);
+        $res = $ps->execute($args);
 
-        return ['status' => $ps->execute($args),
+        return [
+        'status' => $res,
         'errors' => $ps->errorinfo(),
         'rowsAffected' => $ps->rowCount(),
         'id' => $this->conn->lastInsertId(),
@@ -52,7 +49,6 @@ class SQLDataProvider implements DataProvider {
 
     public function query(string $sql, $args = null, string $model = null){
         $ps = $this->conn->prepare($sql);
-
         $res = $ps->execute($args);
 
         if($model){
@@ -61,32 +57,18 @@ class SQLDataProvider implements DataProvider {
             $data = $ps->fetchAll();
         }
         
-        return ['status' => $res,
+        return [
+        'status' => $res,
         'data' =>  $data,
-        'errors' => $ps->errorinfo()];
+        'errors' => $ps->errorinfo()
+        ];
     }
 
     // TODO: Fix this, doesn't work!
-    public function resetIds($tableName){
-        $st = 'ALTER TABLE :tablename AUTO_INCREMENT = 1';
-        $this->execute($st, [
-            ':tablename' => $tableName,
-        ]);
-    }
-
-    // public static function getDataById($id){
-        
-    // }
-    
-    // public function setDataOfId($id, $newData){
-
-    // }
-
-    // public function deleteDataById($id){
-
-    // }
-
-    // public function addData($data){
-
+    // public function resetIds($tableName){
+    //     $st = 'ALTER TABLE :tablename AUTO_INCREMENT = 1';
+    //     $this->execute($st, [
+    //         ':tablename' => $tableName,
+    //     ]);
     // }
 }

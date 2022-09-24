@@ -2,12 +2,24 @@
 
 namespace Cms\Model;
 use Cms\Model\DataProviders\SQLDataProvider;
-require_once "model/DataProviders/SQLDataProvider.php";
+use Cms\Model\Interfaces\Model;
 
-class Admin {
+require_once "model/DataProviders/SQLDataProvider.php";
+require_once "model/interfaces/ModelInterface.php";
+
+class Admin extends Model {
     public $username;
     public $id;
     public $password;
+
+
+    public function save(){
+
+    }
+
+    public function delete(){
+
+    }
 
     public static function getModel($args){
         $sql = SQLDataProvider::getInstance();

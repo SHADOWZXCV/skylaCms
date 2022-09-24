@@ -2,10 +2,12 @@
 
 namespace Cms\Model;
 use Cms\Model\DataProviders\SQLDataProvider;
+use Cms\Model\Interfaces\Model;
 
 require_once "model/DataProviders/SQLDataProvider.php";
+require_once "model/interfaces/ModelInterface.php";
 
-class Article {
+class Article extends Model {
 
 	public function __construct( $data = array() ){
 		if ( isset( $data['id'] ) ) $this->id = (int) $data['id'];
@@ -14,6 +16,10 @@ class Article {
 		if ( isset( $data['description'] ) ) $this->description = preg_replace ( "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['description'] );
 		if ( isset( $data['content'] ) ) $this->content = $data['content'];
 	}
+
+    public function delete(){
+        return self::deleteArticleById($this->id);
+    }
 
 	public static function getArticles(){
 		$sql = SQLDataProvider::getInstance();
@@ -45,7 +51,7 @@ class Article {
 			return $res['data'];
 	}
 
-    public static function getArticleById($id){
+    public static function getById($id){
 		$sql = SQLDataProvider::getInstance();
 		$st = "SELECT * FROM articles WHERE id = :id;";
 		$res = $sql->query($st, [
@@ -62,7 +68,7 @@ class Article {
 			return $res['data'];
 	}
 
-	public static function deleteArticle($id){
+	public static function deleteArticleById($id){
         $sql = SQLDataProvider::getInstance();
 
         $st = "DELETE FROM articles WHERE id = :id;";
@@ -91,7 +97,7 @@ class Article {
         die();
 	}
 
-    public function addArticle(){
+    public function save(){
         $sql = SQLDataProvider::getInstance();
         $st = "INSERT INTO articles (title, description, content, publicationDate)
         VALUES (:title, :description, :content, CURRENT_TIMESTAMP);";
@@ -118,8 +124,7 @@ class Article {
     public static function editArticle($data){
 
         $sql = SQLDataProvider::getInstance();
-        $st = "UPDATE articles SET title = :title, description = :description, content = :content
-        , publicationDate = CURRENT_TIMESTAMP WHERE id= :id ;";
+        $st = "UPDATE articles SET title = :title, description = :description, content = :content WHERE id= :id ;";
 
         $res = $sql->execute(
         $st, [

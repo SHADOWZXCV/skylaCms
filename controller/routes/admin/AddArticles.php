@@ -40,7 +40,7 @@ class AddArticles extends ProtectedRouteController {
             ];
 
             $article = new Article($data);
-            $article->addArticle();
+            $article->save();
 
             $article = null;
             die();

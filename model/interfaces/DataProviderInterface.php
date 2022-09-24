@@ -2,12 +2,12 @@
 
 namespace Cms\Model\Interfaces;
 
-interface DataProvider {
-    // public static function getDataById($id);
-    
-    // public static function setDataOfId($id, $newData);
+abstract class DataProvider {    
+    protected static $instance;
+    protected function __construct(){
+        $this->init();
+    }
 
-    // public static function deleteDataById($id);
-
-    // public static function addData($data);
+    protected abstract function init();
+    public abstract static function getInstance() : DataProvider;
 }
