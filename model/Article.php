@@ -30,8 +30,41 @@ class Article {
 			return $res['data'];
 	}
 
+    public static function getLatestArticles(){
+		$sql = SQLDataProvider::getInstance();
+		$st = "SELECT * FROM articles ORDER BY ID DESC LIMIT 5;";
+		$res = $sql->query($st, [], 'article');
+		
+		if(!$res['status']){
+			return false;
+		}
+
+		if(!$res['data'])
+			$sql->resetIds('articles');
+
+			return $res['data'];
+	}
+
+    public static function getArticleById($id){
+		$sql = SQLDataProvider::getInstance();
+		$st = "SELECT * FROM articles WHERE id = :id;";
+		$res = $sql->query($st, [
+            ':id' => $id
+        ], 'article');
+		
+		if(!$res['status']){
+			return false;
+		}
+
+		if(!$res['data'])
+			$sql->resetIds('articles');
+
+			return $res['data'];
+	}
+
 	public static function deleteArticle($id){
         $sql = SQLDataProvider::getInstance();
+
         $st = "DELETE FROM articles WHERE id = :id;";
 
         $res = $sql->execute(
@@ -100,15 +133,12 @@ class Article {
             $_SESSION['article-errors'] = $res['errors'][1];
             header('Location: http://' . $_SERVER['HTTP_HOST'] . '/admin/articles');
             die();
-
-            return;
         }
 
         if(!$res['rowsAffected']){
             $_SESSION['edit-no-article-found'] = $data['id'];
             header('Location: http://' . $_SERVER['HTTP_HOST'] . '/admin/articles');
             die();
-            return;
         }
 
         $_SESSION['edited-article'] = $data['id'];

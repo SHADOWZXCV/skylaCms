@@ -56,7 +56,6 @@ class SQLDataProvider implements DataProvider {
         $res = $ps->execute($args);
 
         if($model){
-            include('model/Admin.php');
             $data = $ps->fetchAll(PDO::FETCH_CLASS, __MODELS_PATH__ . $model);
         } else {
             $data = $ps->fetchAll();

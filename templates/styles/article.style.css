@@ -1,0 +1,18 @@
+html, body, .article-container {
+    height: 100%;
+    margin: 0;
+    background: url("/templates/static/bg.jpg") center center no-repeat fixed;
+    background-size: cover;
+}
+
+.article {
+    background: white;
+    border: solid 1px black;
+    margin: 2em 1em;
+    padding: 2em;
+}
+
+.content-container {
+    background: wheat;
+    padding: 2em;
+}

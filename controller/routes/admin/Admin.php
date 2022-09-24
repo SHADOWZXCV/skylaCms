@@ -1,13 +1,13 @@
 <?php
-namespace Cms\Controller\Routes;
+namespace Cms\Controller\Routes\Admin;
 use Cms\Controller\Routes\Wrappers\RouteController;
 use Cms\Routes\Request;
-use Cms\Model\DataProviders\SQLDataProvider;
+use Cms\Model\Admin as AdminModel;
 
 session_start();
 require_once "config.php";
-require_once "wrappers/RouteController.php";
-require_once "model/DataProviders/SQLDataProvider.php";
+require_once "controller/routes/wrappers/RouteController.php";
+require_once "model/Admin.php";
 
 class Admin extends RouteController {
     
@@ -27,8 +27,6 @@ class Admin extends RouteController {
     }
 
     protected function post(){
-        $sql = SQLDataProvider::getInstance();
-        $st = "SELECT id, username, password FROM admins WHERE username = :username AND password = :password;";
         $username = $_POST['username'];
         $password = $_POST['password'];
 
@@ -38,11 +36,10 @@ class Admin extends RouteController {
             die();
         }
 
-        $res = $sql->query(
-        $st, [
-        ':username' => $username,
-        ':password' => $password,
-        ], 'Admin');
+        $res = AdminModel::getModel([
+            ':username' => $username,
+            ':password' => $password,
+        ]);
 
         if(!$res['status']){
             view("admin", ['signup-errors' => $res['errors'][1]]);

@@ -1,11 +1,11 @@
 <?php
-namespace Cms\Controller\Routes;
+namespace Cms\Controller\Routes\Admin;
 use Cms\Controller\Routes\Wrappers\RouteController;
 use Cms\Routes\Request;
 use Cms\Model\DataProviders\SQLDataProvider;
 
 require_once "config.php";
-require_once "wrappers/RouteController.php";
+require_once "controller/routes/wrappers/RouteController.php";
 require_once "model/DataProviders/SQLDataProvider.php";
 
 class AdminSignup extends RouteController {

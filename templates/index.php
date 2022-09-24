@@ -1,5 +1,7 @@
 <?php
 
 function view($fname, $data = [], $thisController = null, $funcName = ''){
-    include(TEMPLATE_PATH . "/" . $fname . ".view.php");
+    $isAdmin = (strpos($fname, "admin") !== false) ? "admin/" : "";
+
+    include(TEMPLATE_PATH . "/" . $isAdmin . $fname . ".view.php");
 }

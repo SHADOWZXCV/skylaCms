@@ -5,16 +5,19 @@ use Cms\Router\Request;
 
 require_once "Request.php";
 define('__CONTROLLER_ROUTE_PATH__', "Cms\\Controller\\Routes\\");
+define('__CONTROLLER_PROTECTED_ROUTE_PATH__', "Cms\\Controller\\Routes\\Admin\\");
 
 class Router {
     private static $routes = [
         "/" => "home",
+        "/admin" => "admin",
         "/admin/login" => "admin",
         "/admin/signup" => "adminSignup",
         "/admin/manage" => "adminDashboard",
         "/admin/manage/articles" => "adminArticles",
         "/admin/articles" => "adminArticles",
         "/admin/articles/add" => "addArticles",
+        "/viewArticle" => "ViewArticle",
     ];
 
     private static Request $request;
@@ -46,13 +49,14 @@ class Router {
             view("404");
             die();
         }
-        
+
+        $isAdmin =  strpos(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), "admin") > 0 ? "admin/" : "";
         $routeController = self::$routes[self::$request->url];
         $controller = ucfirst($routeController);
         // $controller = ucfirst(self::$request->controller);
-        include("controller/routes/" . $controller . ".php");
+        include("controller/routes/" . $isAdmin . $controller . ".php");
         
-        $Class = __CONTROLLER_ROUTE_PATH__ . $controller;
+        $Class = ($isAdmin ? __CONTROLLER_PROTECTED_ROUTE_PATH__ : __CONTROLLER_ROUTE_PATH__) . $controller;
 
         $Class::exec(self::$request, $Class);
     }

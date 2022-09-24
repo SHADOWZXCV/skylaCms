@@ -1,0 +1,6 @@
+.article {
+    border: solid 1px black;
+    margin: 2em 1em;
+    padding: 2em;
+    cursor: pointer;
+}
